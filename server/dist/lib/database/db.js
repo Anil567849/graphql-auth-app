@@ -10,19 +10,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.save = save;
+exports.getUserByEmail = getUserByEmail;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-function save(firstName, lastName, email, password) {
+function save(firstName, lastName, email, salt, hashedPassword) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield prisma.user.create({
+        const data = yield prisma.user.create({
             data: {
                 firstName,
                 lastName,
                 email,
-                password,
-                salt: 'random_salt'
-            }
+                salt,
+                password: hashedPassword,
+            },
         });
-        return true;
+        return (data.id).toString();
+    });
+}
+function getUserByEmail(email) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.user.findUnique({ where: { email } });
     });
 }

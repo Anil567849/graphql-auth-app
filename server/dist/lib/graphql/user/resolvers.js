@@ -8,18 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolvers = void 0;
-const db_1 = require("../../database/db");
+const userService_1 = __importDefault(require("../../services/userService"));
 const queries = {
-    hello: () => {
-        return 'anil';
-    }
+    getUserToken: (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { email, password }) {
+        return yield userService_1.default.getUserToken({ email, password });
+    })
 };
 const mutations = {
-    createUser: (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { firstName, lastName, email, password }) {
-        yield (0, db_1.save)(firstName, lastName, email, password);
-        return "id";
+    createUser: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield userService_1.default.createUser(payload);
     })
 };
 exports.resolvers = { queries, mutations };

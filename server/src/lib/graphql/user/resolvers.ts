@@ -1,14 +1,13 @@
-import { save } from "../../database/db"
+import UserService, { CreateUserPayload, GetUserTokenPayload } from "../../services/userService"
 
 const queries = {
-    hello: () => {
-        return 'anil'
+    getUserToken: async (_: any, {email, password}: GetUserTokenPayload) => {
+        return await UserService.getUserToken({email, password});
     }
 }
 const mutations = {
-    createUser: async (_: any, {firstName, lastName, email, password}: {firstName: string, lastName: string, email: string, password: string}) => {
-        await save(firstName, lastName, email, password);
-        return "id";
+    createUser: async (_: any, payload : CreateUserPayload) => {
+        return await UserService.createUser(payload);
     }
 }
 
