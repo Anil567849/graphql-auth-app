@@ -17,6 +17,7 @@ const app = (0, express_1.default)();
 const cors_1 = __importDefault(require("cors"));
 const server_1 = require("@apollo/server");
 const express4_1 = require("@apollo/server/express4");
+const db_1 = require("./lib/database/db");
 const PORT = parseInt(process.env.PORT) || 8000;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -29,13 +30,22 @@ function main() {
                     return 7;
                 },
             },
+            Mutation: {
+                createUser: (_1, _a) => __awaiter(this, [_1, _a], void 0, function* (_, { firstName, lastName, email, password }) {
+                    return yield (0, db_1.save)(firstName, lastName, email, password);
+                })
+            }
         };
         const server = new server_1.ApolloServer({
             typeDefs: `
         type Query {
             numberSix: Int! # Should always return the number 6 when queried
             numberSeven: Int! # Should always return 7
-        }`,
+        }
+        type Mutation {
+            createUser(firstName: String!, lastName: String!, email: String!, password: String!): Boolean
+        }
+        `,
             resolvers: resolvers
         });
         yield server.start();
