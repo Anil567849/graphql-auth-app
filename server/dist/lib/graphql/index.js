@@ -8,23 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const app = (0, express_1.default)();
-const cors_1 = __importDefault(require("cors"));
-const express4_1 = require("@apollo/server/express4");
-const PORT = parseInt(process.env.PORT) || 8000;
-const graphql_1 = __importDefault(require("./lib/graphql"));
-function main() {
+exports.default = initGraphQLApolloServer;
+const server_1 = require("@apollo/server");
+const user_1 = require("./user");
+function initGraphQLApolloServer() {
     return __awaiter(this, void 0, void 0, function* () {
-        app.use('/graphql', (0, cors_1.default)(), express_1.default.json(), (0, express4_1.expressMiddleware)(yield (0, graphql_1.default)()));
-        app.get("/", (req, res) => {
-            res.send("great, hello world");
+        const server = new server_1.ApolloServer({
+            typeDefs: `
+            type Query {
+                ${user_1.User.query}
+            }
+            type Mutation {
+                ${user_1.User.mutation}
+            }
+        `,
+            resolvers: {
+                Query: Object.assign({}, user_1.User.resolvers.queries),
+                Mutation: Object.assign({}, user_1.User.resolvers.mutations)
+            }
         });
-        app.listen(PORT, () => console.log('server running:...', PORT));
+        yield server.start();
+        return server;
     });
 }
-main();
