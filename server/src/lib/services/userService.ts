@@ -1,8 +1,9 @@
 import { getUserByEmail, save } from "../database/db";
 import { generateHash, generateSalt } from "../utils/generateHash";
 import JWT from 'jsonwebtoken';
+import { signJWTToken } from "../utils/jwt";
 
-const JWT_SECRET = "Very_Secret";
+export const JWT_SECRET = "Very_Secret";
 
 export interface CreateUserPayload {
   firstName: string;
@@ -17,7 +18,6 @@ export interface GetUserTokenPayload {
 }
 
 export default class UserService {
-
 
   public static async createUser(payload: CreateUserPayload) {
     const { firstName, lastName, email, password } = payload;
@@ -39,8 +39,7 @@ export default class UserService {
     if (usersHashPassword !== user.password)
       throw new Error("Incorrect Password");
 
-    // Gen Token
-    const token = JWT.sign({ id: user.id, email: user.email }, JWT_SECRET);
+    const token = signJWTToken(user);
     return token;
   }
 

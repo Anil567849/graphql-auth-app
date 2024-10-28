@@ -13,11 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolvers = void 0;
+const db_1 = require("../../database/db");
 const userService_1 = __importDefault(require("../../services/userService"));
 const queries = {
     getUserToken: (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { email, password }) {
         return yield userService_1.default.getUserToken({ email, password });
-    })
+    }),
+    getCurrentLoggedInUser: (_, parameters, context) => __awaiter(void 0, void 0, void 0, function* () {
+        if (context && context.user) {
+            const id = context.user.id;
+            const user = yield (0, db_1.getUserById)(id);
+            return user;
+        }
+        throw new Error("I dont know who are you");
+    }),
 };
 const mutations = {
     createUser: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {

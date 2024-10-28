@@ -16,6 +16,7 @@ function initGraphQLApolloServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const server = new server_1.ApolloServer({
             typeDefs: `
+            ${user_1.User.typeDef}
             type Query {
                 ${user_1.User.query}
             }

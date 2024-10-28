@@ -1,11 +1,11 @@
 import { ApolloServer, BaseContext } from '@apollo/server';
-import { save } from '../database/db';
 import { User } from './user';
 
 export default async function initGraphQLApolloServer(): Promise<ApolloServer<BaseContext>> {
 
     const server = new ApolloServer({
         typeDefs: `
+            ${User.typeDef}
             type Query {
                 ${User.query}
             }

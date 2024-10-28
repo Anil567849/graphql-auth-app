@@ -18,9 +18,21 @@ const cors_1 = __importDefault(require("cors"));
 const express4_1 = require("@apollo/server/express4");
 const PORT = parseInt(process.env.PORT) || 8000;
 const graphql_1 = __importDefault(require("./lib/graphql"));
+const jwt_1 = require("./lib/utils/jwt");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        app.use('/graphql', (0, cors_1.default)(), express_1.default.json(), (0, express4_1.expressMiddleware)(yield (0, graphql_1.default)()));
+        app.use('/graphql', (0, cors_1.default)(), express_1.default.json(), (0, express4_1.expressMiddleware)(yield (0, graphql_1.default)(), {
+            context: (_a) => __awaiter(this, [_a], void 0, function* ({ req }) {
+                const token = req.headers["token"];
+                try {
+                    const user = (0, jwt_1.decodeJWTToken)(token);
+                    return { user };
+                }
+                catch (error) {
+                    return {};
+                }
+            })
+        }));
         app.get("/", (req, res) => {
             res.send("great, hello world");
         });

@@ -14,7 +14,7 @@ export async function save(firstName: string, lastName: string | undefined, emai
     return (data.id).toString();
 }
 
-interface IUser {
+export interface IUser {
     id: string; firstName: string; lastName: string | null; profileImageURL: string | null; email: string; password: string; salt: string; 
 }
 
@@ -22,4 +22,12 @@ interface IUser {
 export async function getUserByEmail(email: string): Promise<IUser | null>{
     return prisma.user.findUnique({ where: { email } });
 }
+
+
+
+export async function getUserById(id: string): Promise<IUser | null>{
+    return prisma.user.findUnique({ where: { id } });
+}
+
+
 

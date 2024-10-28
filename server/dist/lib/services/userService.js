@@ -8,14 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.JWT_SECRET = void 0;
 const db_1 = require("../database/db");
 const generateHash_1 = require("../utils/generateHash");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const JWT_SECRET = "Very_Secret";
+const jwt_1 = require("../utils/jwt");
+exports.JWT_SECRET = "Very_Secret";
 class UserService {
     static createUser(payload) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,8 +33,7 @@ class UserService {
             const usersHashPassword = (0, generateHash_1.generateHash)(userSalt, password);
             if (usersHashPassword !== user.password)
                 throw new Error("Incorrect Password");
-            // Gen Token
-            const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email }, JWT_SECRET);
+            const token = (0, jwt_1.signJWTToken)(user);
             return token;
         });
     }
