@@ -1,6 +1,7 @@
 ### Access Apollo Server
 ``` bash
-http://localhost:8000/graphql ```
+http://localhost:8000/graphql
+```
 
 ### List down all the docker containers
 docker ps
