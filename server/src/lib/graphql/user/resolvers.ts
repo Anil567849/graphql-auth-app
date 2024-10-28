@@ -5,7 +5,7 @@ const queries = {
     getUserToken: async (_: any, {email, password}: GetUserTokenPayload) => {
         return await UserService.getUserToken({email, password});
     },
-    getCurrentLoggedInUser: async (_: any, parameters: any, context: any) => {
+    getCurrentLoggedInUser: async (_: any, parameters: any, context: any) => { // context is given by expressMiddleware [root -> index.ts]
         if (context && context.user) {
           const id = context.user.id;
           const user = await getUserById(id);
@@ -14,6 +14,7 @@ const queries = {
         throw new Error("I dont know who are you");
       },
 }
+
 const mutations = {
     createUser: async (_: any, payload : CreateUserPayload) => {
         return await UserService.createUser(payload);

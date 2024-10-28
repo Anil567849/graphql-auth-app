@@ -1,6 +1,5 @@
 import { getUserByEmail, save } from "../database/db";
 import { generateHash, generateSalt } from "../utils/generateHash";
-import JWT from 'jsonwebtoken';
 import { signJWTToken } from "../utils/jwt";
 
 export const JWT_SECRET = "Very_Secret";

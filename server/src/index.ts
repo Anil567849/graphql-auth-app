@@ -4,7 +4,6 @@ import cors from 'cors';
 import { expressMiddleware } from '@apollo/server/express4';
 const PORT = parseInt(process.env.PORT as string) || 8000;
 import initGraphQLApolloServer from './lib/graphql';
-import UserService from './lib/services/userService';
 import { decodeJWTToken } from './lib/utils/jwt';
 
 async function main() {
